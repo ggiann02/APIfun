@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>Api Fun: Weather App</title>
+    	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <style>
+                * {
+                        margin:0;
+                        padding:0;
+                }
+                
+                body {
+                        text-align: center;
+                        font-family: sans-serif;
+                        background-color: #cffdff;
+                }
+                
+                h1 {
+                        margin-top: 30px;
+                        margin-bottom: 30px;
+                        color: #004245;
+                }
+                
+                p {
+                        color: #004245;
+                        margin-bottom: 15px;
+                        margin-left: 30px;
+                        margin-right: 30px;
+                }
+                
+                form {
+                        background-color: #00757a;
+                        padding: 20px;
+                }
+                
+                input {
+                        border-radius: 5px;
+                        padding: 5px;
+                        border: none;
+                        text-align: center;
+                }
+                
+                button {
+                        padding: 5px;
+                        border-radius: 5px;
+                        border: none;
+                }
+                
+                #data {
+                        text-align: center;
+                        color:  #004245;     
+                        margin-top: 20px;  
+                        line-height: 25px;
+                }
+                
+        </style>
+        
+</head>
+<body>
+        <script>
+                function getActivity() {
+                        var request = new XMLHttpRequest();
+                        const query = getPriceQuery();
+        
+                        request.open("GET", "https:www.boredapi.com/api/activity" + query, true);
+
+        
+                        request.onreadystatechange = function() {
+                            if ((request.readyState == 4) && (request.status == 200)) {
+                                data = request.responseText;
+                                json = JSON.parse(data);
+                                print(json);
+                            }
+                        };
+                
+        
+                        request.send();
+                    }
+                    
+                    function getPriceQuery() {
+                            var maxprice = document.getElementById('max').value;
+                            var query = "?minprice=0&maxprice=" + maxprice;
+                            return query;    
+                    }
+                    
+        function print(json) {
+                let str = "<ul style='list-style-type:none'>";
+                    str += "<li><b>Activity: </b>" + json.activity + "</li>";
+                    str += "<li><b>Accessibility: </b>" + json.accessibility + "</b></li>";
+                    str += "<li><b>Type: </b>" + json.type + "</li>";
+                    str += "<li><b>Participants: </b>" + json.participants + "</li>";
+                    str += "<li><b>Price: </b>" + json.price + "</li>";
+                    str += "<li><b>Link: </b>" + json.link + "</li>";
+                    str += "<li><b>Key: </b>" + json.key + "</li>";
+                str += "</ul>";
+                document.getElementById("data").innerHTML = str;
+            }
+
+        </script>
+        
+        <h1 class="header">Click this button for a random activity to do if you're bored</h1>
+        <p>
+                The API I selected is Bored API and it generates a random activity to do when you are bored (specifying activity, accessibility, type, participant number, price, link and activity key). </p>
+        <p>
+                I found it on the website https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/
+        </p>
+        
+        <p>There is only one option for this API (which is generating a random activity), but you can place queries to limit the activities that are randomly generated.
+        </p>
+        
+        <p>I chose to let the user decide what the maximum price of their activity would be</p>
+        
+        <p>I could see this API being used as an extra feature for a website that provides a specific type of service - for example, for a website that provides tourism service, the activities library could be re-written to only include tourism related activities and the user can randomly select a tourism activity for the weekend.</p>
+        
+        <p><b>Input the maximum price you want your activity to have</p>
+
+        <p>Leave blank if you have no preference</b></p>
+        <form class="inputform">
+                <input type="text" value="" placeholder="Maximum price" id="max">
+                <br><br>
+                <button type="button" onclick="getActivity()">Submit</button>
+        </form>
+        <p class="data" id="data"></p>
+        
+</body>
+</html>
